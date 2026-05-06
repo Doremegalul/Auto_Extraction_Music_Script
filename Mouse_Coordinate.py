@@ -66,7 +66,7 @@ def run_automation():
     pg.hotkey("winleft", "shift", "s")  # Windows screenshot tool
     time.sleep(1)
 
-    pg.moveTo(71, 190)  # Screenshot start
+    pg.moveTo(87, 550)  # Screenshot start
     pg.dragTo(1389, 1001, duration = 0.4, button = "left")  # Screenshot end
 
     # =====================
@@ -74,13 +74,14 @@ def run_automation():
     # =====================
     mouse_click(344, 1055)  # Chrome icon
     mouse_click(935, 973)   # ChatGPT text box
+
     pg.hotkey("ctrl", "v")  # Paste screenshot
 
-    time.sleep(3)
+    time.sleep(2)
     mouse_click(1446, 979)  # Send prompt
 
-    time.sleep(5)
     mouse_click(696, 377)
+    time.sleep(8)
     pg.dragTo(1480, 372, duration = 2, button = "left")
     pg.hotkey("ctrl", "c")  # Copy title/result
 
@@ -120,8 +121,53 @@ def loop_manual():
             print("Error:", e)
             break
 
+def loop_manual_temporary_rename ():
+    count = int(input("How many songs to process? "))
+
+    for i in range(count):
+        print(f"Running song {i+1}/{count}")
+
+        try:
+            temporary_rename()
+            time.sleep(2)
+        except Exception as e:
+            print("Error:", e)
+            break
+
+def temporary_rename():
+    # This is for rename the VLC file itself. Not the mp3 file. You need to change the meta data.
+    
+    print("Starting in 1 seconds. Switch to the folder now.")
+    time.sleep(1)
+
+    pg.rightClick(325, 201) # Right click the file
+    mouse_click(442, 819) # Click rename
+    pg.hotkey("ctrl", "c")  # Copy name
+    mouse_click(1396, 197) # Exit out of the name
+
+    pg.rightClick(325, 201) # Right click the file again
+    mouse_click(335, 221) # Click play
+    time.sleep(0.5)
+    #mouse_click(646, 1058) # Click the bottom app
+
+    pg.rightClick(241, 107) # Right click the file in vlc
+    mouse_click(312, 190) # Click information
+
+    mouse_click(733, 374) # Click the title
+    pg.hotkey("ctrl", "a") # Highlight the title
+    pg.hotkey("ctrl", "v") # Paste the new title
+
+    mouse_click(1156, 769) # Save Metadata
+    mouse_click(1250, 767) # Close
+
+    mouse_click(1890, 10) # X it out
+
+
+
 if __name__ == "__main__":
     #mouse_coordinate()  # Turn on to get coordinate, turn off once finished
 
     # NOTE: Remember to have YouTube, MP3 Convertor, AI Assistance, and Folder ready.
-    loop_manual()
+    #loop_manual()
+
+    loop_manual_temporary_rename()
